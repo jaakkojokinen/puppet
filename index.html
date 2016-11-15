@@ -170,6 +170,110 @@ This module can be found from repository of this page. </p>
 <p>This document is heavily based on 2012 post by Tero Karvinen <a href="http://terokarvinen.com/2012/puppetmaster-on-ubuntu-12-04">http://terokarvinen.com/2012/puppetmaster-on-ubuntu-12-04</a></p>
 
 <p><a href="https://docs.puppet.com/puppet/3.8/reference/config_file_main.html">https://docs.puppet.com/puppet/3.8/reference/config_file_main.html</a></p>
+
+<h2>
+<a id="week-3" class="anchor" href="#week-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Week 3</h2>
+
+<h3>
+<a id="test-environment-1" class="anchor" href="#test-environment-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test environment</h3>
+
+<ul>
+<li>Macbook Pro (early 2011) </li>
+<li>Xubuntu 16.04 on VirtualBox (5.0.28 r111378) / Puppet version 3.8.5</li>
+</ul>
+
+<h3>
+<a id="configuring-terminal-settings-with-puppet" class="anchor" href="#configuring-terminal-settings-with-puppet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuring terminal settings with puppet</h3>
+
+<p>Assingment was to configure desktop settings with puppet and to push them to VCS. I tried to configure terminal color settings because I always change those anyway. First I created the init.pp file.</p>
+
+<div class="highlight highlight-source-puppet"><pre><span class="pl-k">class</span> <span class="pl-en">terminal</span> {
+    <span class="pl-k">file</span> { <span class="pl-en">"/home/jaakko/.config/xfce4/terminal/terminalrc"</span>:
+        <span class="pl-c1">ensure </span>=&gt; <span class="pl-s"><span class="pl-pds">"</span>file<span class="pl-pds">"</span></span>,
+        <span class="pl-c1">content </span>=&gt; <span class="pl-c1">template</span>(<span class="pl-s"><span class="pl-pds">"</span>terminal/terminalrc.erb<span class="pl-pds">"</span></span>),
+    }
+}</pre></div>
+
+<p>I also tested with another file path. This will change the colors for all the users, not just me.</p>
+
+<div class="highlight highlight-source-puppet"><pre><span class="pl-k">class</span> <span class="pl-en">terminal</span> {
+    <span class="pl-k">file</span> { <span class="pl-en">"/etc/xdg/xdg-xubuntu/xfce4/terminal/terminalrc"</span>:
+        <span class="pl-c1">ensure </span>=&gt; <span class="pl-s"><span class="pl-pds">"</span>file<span class="pl-pds">"</span></span>,
+        <span class="pl-c1">content </span>=&gt; <span class="pl-c1">template</span>(<span class="pl-s"><span class="pl-pds">"</span>terminal/terminalrc.erb<span class="pl-pds">"</span></span>),
+    }
+}</pre></div>
+
+<p>Default terminal settings can be found from file ~/.config/xfce4/terminal/terminalrc or from /etc/xdg/xdg-xubuntu/xfce4/terminal/terminalrc. The latter is for configuring settings system wide. </p>
+
+<p>/etc/xdg/xdg-xubuntu/xfce4/terminal/terminalrc</p>
+
+<pre><code>[Configuration]
+FontName=DejaVu Sans Mono 9
+ColorForeground=#b7b7b7
+ColorBackground=#131926
+ColorPalette=#000000;#aa0000;#44aa44;#aa5500;#0039aa;#aa22aa;#1a92aa;#aaaaaa;#777777;#ff8787;#4ce64c;#ded82c;#295fcc;#cc58cc;#4ccce6;#ffffff
+ColorSelection=#163b59
+ColorSelectionUseDefault=FALSE
+ColorCursor=#0f4999
+ColorBold=#ffffff
+ColorBoldUseDefault=FALSE
+TabActivityColor=#0f4999
+</code></pre>
+
+<p>~/.config/xfce4/terminal/terminalrc</p>
+
+<pre><code>[Configuration]
+ColorForeground=#b7b7b7
+ColorBackground=#131926
+ColorCursor=#93a1a1
+ColorSelection=#163b59
+ColorSelectionUseDefault=FALSE
+ColorBoldUseDefault=FALSE
+ColorPalette=#000000;#aa0000;#44aa44;#aa5500;#0039aa;#aa22aa;#1a92aa;#aaaaaa;#777777;#ff8787;#4ce64c;#ded82c;#295fcc;#cc58cc;#4ccce6;#ffffff
+FontName=DejaVu Sans Mono 9
+MiscAlwaysShowTabs=FALSE
+MiscBell=FALSE
+MiscBordersDefault=TRUE
+MiscCursorBlinks=FALSE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
+MiscDefaultGeometry=80x24
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=TRUE
+MiscMouseAutohide=FALSE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscHighlightUrls=TRUE
+MiscScrollAlternateScreen=TRUE
+TabActivityColor=#0f4999
+</code></pre>
+
+<p>New values for the keys ColorForeground, ColorBackground and ColorPalette. I defined these in the templates/terminalrc.erb file.</p>
+
+<pre><code>ColorForeground=#93a1a1
+ColorBackground=#002b36
+ColorPalette=#002b36;#dc322f;#859900;#b58900;#268bd2;#6c71c4;#2aa198;#93a1a1;#657b83;#cb4b16;#073642;#586e75;#839496;#eee8d5;#d33682;#fdf6e3
+</code></pre>
+
+<pre><code>sudo puppet apply -e 'class{terminal:}'
+sudo apt-get update
+sudo apt-get install -y tree
+</code></pre>
+
+<p><img src="https://github.com/jaakkojokinen/puppet/blob/master/docs/images/Screen%20Shot%202016-11-15%20at%2014.02.21.png?raw=true" alt="print1"></p>
+
+<h3>
+<a id="sources-1" class="anchor" href="#sources-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sources</h3>
+
+<p><a href="https://www.puppetcookbook.com">https://www.puppetcookbook.com</a></p>
+
+<p>List of ready-to-use color configurations
+<a href="https://github.com/chriskempson/base16-xfce4-terminal">https://github.com/chriskempson/base16-xfce4-terminal</a></p>
+
+<p><a href="http://askubuntu.com/questions/151403/xubuntu-how-to-restore-default-terminal-text-coloring">http://askubuntu.com/questions/151403/xubuntu-how-to-restore-default-terminal-text-coloring</a></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/jaakkojokinen">jaakkojokinen</a></p>
