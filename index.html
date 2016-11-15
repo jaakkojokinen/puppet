@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Puppet by jaakkojokinen</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Puppet</h1>
+        <p>Linux configuration management course assignments and documentations. Course by Tero Karvinen, Haaga-Helia Uni. of Applied Sciences late autumn 2016. </p>
+
+        <p class="view"><a href="https://github.com/jaakkojokinen/puppet">View the Project on GitHub <small>jaakkojokinen/puppet</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/jaakkojokinen/puppet/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jaakkojokinen/puppet/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jaakkojokinen/puppet">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a id="test-environment" class="anchor" href="#test-environment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test environment</h3>
+
+<ul>
+<li>Macbook Pro (early 2011) </li>
+<li>Xubuntu 16.04 on VirtualBox (5.0.28 r111378) / Puppet version 3.8.5</li>
+<li>Raspberry Pi 3 model B / Raspbian GNU/Linux 8 (jessie) / Puppet version 3.7.2</li>
+<li>Raspberry Pi 1 model B+ / Raspbian GNU/Linux 8 (jessie) / Puppet version 3.7.2</li>
+</ul>
+
+<h3>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why</h3>
+
+<p>This is documentation for the Linux configuration management course by Tero Karvinen in Haaga-Helia University of Applied Sciences. </p>
+
+<h3>
+<a id="the-agent--master-architecture" class="anchor" href="#the-agent--master-architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Agent / Master Architecture</h3>
+
+<p>Assingment was to control agent computer(s) over the network with Puppet. First I configured new hostnames to computers. </p>
+
+<pre><code>sudo hostnamectl set-hostname archvm
+sudoedit /etc/hosts
+</code></pre>
+
+<p>Inside the file I added hostname archvm after jaakko-VirtualBox.</p>
+
+<pre><code>127.0.0.1       localhost
+127.0.1.1       jaakko-VirtualBox archvm
+</code></pre>
+
+<p>With RasPis the file content differs. I used two agents and named them puppi &amp; puppit.</p>
+
+<pre><code>127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+127.0.1.1       raspberrypi puppi
+</code></pre>
+
+<pre><code>127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+127.0.1.1       raspberrypi puppit
+</code></pre>
+
+<p>Restart of the avahi daemon is required.</p>
+
+<pre><code>sudo service avahi-daemon restart
+</code></pre>
+
+<p>Now I was able to ping between the computers using the new hostnames.</p>
+
+<pre><code>pi@puppi:/etc/puppet $ ping -c 1 archvm.local
+PING archvm.local (10.0.1.15) 56(84) bytes of data.
+64 bytes from 10.0.1.15: icmp_seq=1 ttl=64 time=8.47 ms
+
+--- archvm.local ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 8.473/8.473/8.473/0.000 ms
+</code></pre>
+
+<pre><code>jaakko@archvm:/etc/puppet$ ping -c 1 puppi.local
+PING puppi.local (10.0.1.12) 56(84) bytes of data.
+64 bytes from 10.0.1.12: icmp_seq=1 ttl=64 time=13.4 ms
+
+--- puppi.local ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, 
+</code></pre>
+
+<h3>
+<a id="configuring-master" class="anchor" href="#configuring-master" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuring Master</h3>
+
+<pre><code>sudo apt-get update
+sudo apt-get install -y puppetmaster
+</code></pre>
+
+<p>To create new certificates, the puppet process has to be stopped and default ssl directory needs to be removed. With sudo ls it is possible to check the contents of directory and sudo rm -r to destroy it. It is good to stop to think again before executing sudo rm -r in any conditions.</p>
+
+<pre><code>sudo service puppetmaster stop
+sudo ls /var/lib/puppet/ssl/
+sudo rm -r /var/lib/puppet/ssl/
+</code></pre>
+
+<pre><code>sudoedit /etc/puppet/puppet.conf
+</code></pre>
+
+<p>New hostname is added into the puppet.conf file. This goes under the [master] section. </p>
+
+<pre><code>dns_alt_names = archvm.local
+</code></pre>
+
+<p>Then starting the puppet will generate new /var/lib/puppet/ssl/ directory with new certificate.</p>
+
+<pre><code>sudo service puppet start
+</code></pre>
+
+<h3>
+<a id="configuring-agent" class="anchor" href="#configuring-agent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuring agent</h3>
+
+<pre><code>sudo apt-get update
+sudo apt-get install -y puppet 
+</code></pre>
+
+<p>Add new [agent] section and set the master there inside the config file.</p>
+
+<pre><code>sudoedit /etc/puppet/puppet.conf
+</code></pre>
+
+<pre><code>[agent]
+server = archvm.local
+</code></pre>
+
+<pre><code>sudo puppet agent --enable
+sudo service puppet restart
+</code></pre>
+
+<h3>
+<a id="sign-the-cert-from-master-and-test-from-agents" class="anchor" href="#sign-the-cert-from-master-and-test-from-agents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sign the Cert from master and test from agents</h3>
+
+<pre><code>sudo puppet cert --sign puppi.pp.htv.fi
+sudo puppet cert --sign puppit.pp.htv.fi
+</code></pre>
+
+<pre><code>sudo puppet agent -t
+</code></pre>
+
+<p>I used helloworld module to test how agents are taking orders. Here are the results in printscreens.
+This module can be found from repository of this page. </p>
+
+<p><img src="https://github.com/jaakkojokinen/puppet/blob/master/docs/images/prints.png?raw=true" alt="print1"></p>
+
+<p><img src="https://github.com/jaakkojokinen/puppet/blob/master/docs/images/prints2.png?raw=true" alt="print1"></p>
+
+<h3>
+<a id="sources" class="anchor" href="#sources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sources</h3>
+
+<p>This document is heavily based on 2012 post by Tero Karvinen <a href="http://terokarvinen.com/2012/puppetmaster-on-ubuntu-12-04">http://terokarvinen.com/2012/puppetmaster-on-ubuntu-12-04</a></p>
+
+<p><a href="https://docs.puppet.com/puppet/3.8/reference/config_file_main.html">https://docs.puppet.com/puppet/3.8/reference/config_file_main.html</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jaakkojokinen">jaakkojokinen</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
