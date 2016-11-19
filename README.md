@@ -1,12 +1,19 @@
-README
-
 Puppet modules for Linux configuration management course by Tero Karvinen, Haaga-Helia Uni. of Applied Sciences.
+Documentation can be found here: https://jaakkojokinen.github.io/puppet/
 
-w1 = apache
+## Apache
 
-w2 = helloworld
+Package / File / Service module for installing and configuring apache.
 
-w3 = terminal       
+## Helloworld
 
-http://terokarvinen.com/2016/aikataulu-linuxin-keskitetty-hallinta-ict4tn011-10-loppusyksy-2016
+Test module for puppetmaster / agent architecture.
+
+## Terminal
+
+Module for changing terminal color settings.
+
+## Yarn
+
+Module for installing nodejs and yarn.
 
