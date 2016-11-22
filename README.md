@@ -15,5 +15,4 @@ Module for changing terminal color settings.
 
 ## Yarn
 
-Module for installing nodejs and yarn for Ubuntu 16.04
-
+Module for installing nodejs and yarn for Ubuntu 16.04. Tested only with VirtualBox VM.
