@@ -245,7 +245,7 @@ http://askubuntu.com/questions/151403/xubuntu-how-to-restore-default-terminal-te
 
 ### Netboot and OS installation
 
-This week I tried to install operation system (Linux Xubuntu) to another computer over the network. I had to rethink and setup my home network to be able to connect new computer via ethernet cable. Normally I just use wifi and my router-in-use has no ethernet cable ports. I used  This is what my home network looked like during the test:
+This week I tried to install operation system (Linux Xubuntu) to another computer over the network. I had to rethink and setup my home network to be able to connect new computer via ethernet cable. Normally I just use wifi and my router-in-use has no ethernet cable ports. This is what my home network looked like during the test:
 
 ![print1]
 (https://github.com/jaakkojokinen/puppet/blob/master/docs/images/hnw.jpg?raw=true)
