@@ -366,7 +366,7 @@ I'm not sure what was the reason for bad mirror error. During the test I also tr
 ![print1]
 (https://github.com/jaakkojokinen/puppet/blob/master/docs/images/IMG_1887.jpg?raw=true)
 
-It could have been better to do this assignment in school's laboratory environment because then I wouldn't have to think about router configs and reset them. During the test my router obviously updated itself with newer firmwire and the config pages changed and some settings turned inaccessible. Anyway this assignment was very instructive and fun to do.
+It could have been better to do this assignment in school's laboratory environment because then I wouldn't have to think about router configs and reset them. During the test my router obviously updated itself with newer firmware and the config pages changed and some settings turned inaccessible. Anyway this assignment was very instructive and fun to do.
 
 ## Sources
 
