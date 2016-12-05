@@ -1,6 +1,6 @@
 class terminal {
-	file { "/etc/xdg/xdg-xubuntu/xfce4/terminal/terminalrc":
+	file { "/etc/nanorc":
 		ensure => "file",
-		content => template("terminal/terminalrc.erb"),
+		content => template("terminal/nanorc.erb"),
 	}
 }
