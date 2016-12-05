@@ -1,5 +1,5 @@
-### Week 4
-## Yarn module 
+## Week 4
+### Yarn module 
 
 Assignment was to look for public Puppet modules and try to use them in own configurations. I tried couple of modules from USGCB and from Github but then I got side tracked and tried something different. 
 
@@ -43,7 +43,9 @@ sudo puppet apply -e 'class{yarn:}'
 ### Sources
 
 https://github.com/artberri/puppet-yarn
+
 https://yarnpkg.com/en/docs/install#linux-tab
+
 https://github.com/yarnpkg/yarn
 
 https://usgcb.nist.gov/usgcb/rhel/download_rhel5.html

@@ -1,5 +1,5 @@
-### Week 2
-## The Agent / Master Architecture
+## Week 2
+### The Agent / Master Architecture
 Assignment was to Assingment was to control agent computer(s) over the network with Puppet. First I configured new hostnames to computers. 
 
 ### Test environment

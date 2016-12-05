@@ -1,5 +1,5 @@
-### Week 1
-## First Puppet module
+## Week 1
+### First Puppet module
 
 First assignment was to write a Puppet module that use at least two different resource types. 
 
