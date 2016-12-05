@@ -135,6 +135,9 @@ It could have been better to do this assignment in school's laboratory environme
 ## Sources
 
 https://joonaleppalahti.wordpress.com/2016/11/18/palvelinten-hallinta-harjoitus-8/
+
 http://terokarvinen.com/2016/aikataulu-palvelinten-hallinta-ict4tn022-1-5-op-uusi-ops-loppusyksy-2016
+
 http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-i386/current/images/netboot/ 
+
 https://wiki.debian.org/DebianInstaller/Preseed
