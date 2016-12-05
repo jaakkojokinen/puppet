@@ -1,5 +1,5 @@
 Puppet modules for Linux configuration management course by Tero Karvinen, Haaga-Helia Uni. of Applied Sciences.
-Documentation can be found here: https://jaakkojokinen.github.io/puppet/
+Docs https://github.com/jaakkojokinen/puppet/tree/master/docs/reports
 
 ## Apache
 
@@ -11,8 +11,9 @@ Test module for puppetmaster / agent architecture.
 
 ## Terminal
 
-Module for changing terminal color settings.
+Module for prefered terminal settings. 
 
 ## Yarn
 
 Module for installing nodejs and yarn for Ubuntu 16.04. Tested only with VirtualBox VM.
+

@@ -1,5 +1,7 @@
 ## Week 3
 
+(note: current module configures nanorc file only)
+
 ### Test environment
 - Macbook Pro (early 2011) 
 - Xubuntu 16.04 on VirtualBox (5.0.28 r111378) / Puppet version 3.8.5
