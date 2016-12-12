@@ -1,0 +1,86 @@
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds059496.mlab.com:59496/plants');
+
+var Plant = require('./app/models/plant');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+var port = process.env.PORT || 8080;
+
+var router = express.Router(); 
+
+router.use(function(req, res, next) {
+	// do logging
+	console.log('Something is happening.');
+	next(); // make sure we go to the next routes and don't stop here
+    });
+
+router.get('/', function(req, res) {
+	res.json({ message: 'jungle boogie'  });
+});
+
+router.route('/plants')
+// plant create
+    .post(function(req, res) {
+        
+	    var plant = new Plant();
+	    plant.name = req.body.name;
+
+	    plant.save(function(err) {
+		    if (err)
+			res.send(err);
+		    res.json({ message: 'Plant added!' });
+		});
+	})
+		// get plant
+	.get(function(req, res) {
+		Plant.find(function(err, plants) {
+			if (err)
+			    res.send(err);
+			
+			res.json(plants);
+		    });
+	    });
+
+router.route('/plants/:plant_id')
+    .get(function(req, res) {
+	    Plant.findById(req.params.plant_id, function(err, plant) {
+		    if (err)
+			res.send(err);
+		    res.json(plant);
+		});
+	})
+
+    .put(function(req, res) {
+	    Plant.findById(req.params.plant_id, function(err, plant) {
+		    if (err)
+			res.send(err)
+		    plant.name = req.body.name;
+		    
+		    plant.save(function(err) {
+			    if (err)
+				res.send(err)
+			    res.json({ message: 'plant udated!' });
+			});
+		});
+	})
+
+    .delete(function(req, res) {
+	    Plant.remove({
+		    _id:  req.params.plant_id
+			}, function(err, plant) {
+		    if (err)
+			res.send(err);
+
+		    res.json({ message: 'Successfully deleted' });
+		});
+	});
+
+app.use('/api', router);
+
+app.listen(port);
+console.log('console log on port ' + port);
