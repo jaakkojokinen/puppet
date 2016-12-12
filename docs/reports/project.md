@@ -208,10 +208,15 @@ curl --data "param1=name&param2=shrubbery" http://10.0.1.6:8080/api/plants/
 ### References
 
 http://terokarvinen.com/2016/aikataulu-linuxin-keskitetty-hallinta-ict4tn011-10-loppusyksy-2016
+
 https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
+
 https://mlab.com
+
 https://www.puppetcookbook.com
+
 https://docs.puppet.com/puppet/3.8/
+
 http://askubuntu.com/questions/299870/http-post-and-get-using-curl-in-linux
 
 
